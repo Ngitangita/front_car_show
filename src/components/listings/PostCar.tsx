@@ -18,6 +18,8 @@ export default function PostCar() {
     type: "",
   })
 
+  const[inputFile, setInputFile] = useState<File | null >(null)
+
   const onChangeData = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setCars((prev) => ({
@@ -44,14 +46,21 @@ export default function PostCar() {
   const onSubmitData = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      const res = await fetch('http://localhost:8080/cars/no-images', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify([cars]),
-      });
-      const data = await res.json()
-      console.log(data);
+      const formData = new FormData();
+      const data = {...cars, images:inputFile}
+      for (const key in data) {
+        const value = data[key as keyof typeof data];
+        if (value instanceof File) {
+            formData.append(key, value, value.name);
+        } else {
+            formData.append(key, String(value));
+        }
+    }
 
+      const res = await fetch('http://localhost:8080/cars', {
+        method: "POST",
+        body: formData,
+      });
       if (!res.ok) {
         throw new Error("Failed to fetch car");
       }
@@ -61,7 +70,12 @@ export default function PostCar() {
     }
   }
 
-
+  const onChangeFile = (e: ChangeEvent<HTMLInputElement>)=>{
+    const selectedFile = e.target?.files?.[0]
+    if (selectedFile) {
+      setInputFile(selectedFile)
+    }
+  }
 
   return (
     <div className="w-full flex justify-center items-center flex-col">
@@ -161,9 +175,11 @@ export default function PostCar() {
               value={cars.type}
             />
           </div>
-          <div>
+          <div className="mb-4 w-44">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="file">Choisir le fichier</label>
-            <input className="shadow appearance-none border rounded w-full py-1 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="file" id='file' type="file" />
+            <input className="shadow appearance-none border rounded w-full py-1 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+            name="images" id='file' type="file" 
+            onChange={onChangeFile}/>
           </div>
         </div>
         <div className="mb-4">
