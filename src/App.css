@@ -10,3 +10,15 @@
 .size{
     font-size: 30px;
 }
+
+.roundedRigth{
+    border-radius: 25px 90px 60px 25px;
+}
+
+.roundedLeft{
+    border-radius: 90px 25px 25px 60px;
+}
+
+.Transition{
+    transition: all 0.8s ease-in-out;
+}

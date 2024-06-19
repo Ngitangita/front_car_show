@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Login from "./Login";
 
 export default function CheckoutForm() {
   const [type, setType] = useState("userIconSingin");
@@ -57,7 +58,8 @@ export default function CheckoutForm() {
   };
 
   return (
-    <div className="max-w-sm mx-auto p-4 bg-white shadow-md rounded-lg mt-5">
+    <div className="overflow-hidden">
+      <div className="max-w-sm mx-auto p-4 bg-white shadow-md rounded-lg mt-5">
       <div className="text-center py-6">
         <div className="mb-4">
           {type === "userIconSingin" ? (
@@ -196,6 +198,8 @@ export default function CheckoutForm() {
           </form>
         )}
       </div>
+    </div>
+    <Login/>
     </div>
   );
 }

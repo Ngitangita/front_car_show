@@ -5,7 +5,7 @@ export interface LoginType{
     password: string
 }
 
-export type SingUpType = Omit<LoginType, "id" | "name">
+export type SingUpType = Omit<LoginType, "id">
 
 export interface Image {
     id: number;
